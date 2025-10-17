@@ -6,13 +6,13 @@
   "permissions": ["storage", "activeTab"],
   "host_permissions": ["https://*.autotrader.com/*"],
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "dist/background.js",
     "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["https://*.autotrader.com/*"],
-      "js": ["content.js"]
+      "js": ["dist/content.js"]
     }
   ],
   "action": {
