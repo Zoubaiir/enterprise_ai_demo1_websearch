@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "AI Car Shopping Assistant",
+  "description": "Analyzes car listings with AI to highlight deals and risks.",
+  "version": "0.1.0",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://*.autotrader.com/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.autotrader.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_title": "AI Car Insight",
+    "default_popup": "public/popup.html"
+  }
+}
