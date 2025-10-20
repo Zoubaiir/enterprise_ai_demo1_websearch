@@ -19,7 +19,7 @@ export class LocalAssessmentRepository implements AssessmentRepository {
 
   private async getAll(): Promise<Record<string, DealAssessment>> {
     return new Promise((resolve) => {
-      chrome.storage.local.get(this.storageKey, (result) => {
+      chrome.storage.local.get(this.storageKey, (result: any) => {
         resolve((result[this.storageKey] as Record<string, DealAssessment>) ?? {});
       });
     });

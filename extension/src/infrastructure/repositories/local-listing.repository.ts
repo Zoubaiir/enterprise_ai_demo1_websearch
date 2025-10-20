@@ -33,7 +33,7 @@ export class LocalListingRepository implements ListingRepository {
 
   private async getStorageValue<T>(key: string): Promise<T | undefined> {
     return new Promise((resolve) => {
-      chrome.storage.local.get(key, (result) => resolve(result[key] as T | undefined));
+      chrome.storage.local.get(key, (result: any) => resolve(result[key] as T | undefined));
     });
   }
 }

@@ -56,7 +56,7 @@ notificationManager.publish({
   }
 });
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: any, _sender: any, sendResponse: (resp?: any) => void) => {
   if (message?.type !== "evaluate-listing") {
     return;
   }
