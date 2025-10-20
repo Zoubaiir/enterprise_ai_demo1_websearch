@@ -22,11 +22,22 @@ export class EvaluateListingCommand implements Command<EvaluateListingPayload, D
 
   async execute(input: EvaluateListingPayload): Promise<DealAssessment> {
     const listing = await this.scraper.fetch(input.url);
-    await this.persistence.saveListing(listing);
+
+    // Persist the listing and run analysis in parallel so we don't block on storage.
+    const saveListingPromise = this.persistence.saveListing(listing).catch((e) => {
+      console.error("Failed to save listing", e);
+    });
 
     const assessment = await this.runAnalysis(listing);
-    await this.persistence.saveAssessment(assessment);
+
+    // Persist assessment asynchronously (don't block response), notify immediately.
+    this.persistence.saveAssessment(assessment).catch((e) => {
+      console.error("Failed to save assessment", e);
+    });
     this.notification.notifyAssessment(assessment);
+
+    // Ensure listing persistence finishes eventually, but don't delay the response.
+    saveListingPromise.catch(() => {});
 
     return assessment;
   }
