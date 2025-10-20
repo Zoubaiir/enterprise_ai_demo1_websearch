@@ -4,15 +4,24 @@
   "description": "Analyzes car listings with AI to highlight deals and risks.",
   "version": "0.1.0",
   "permissions": ["storage", "activeTab"],
-  "host_permissions": ["https://*.autotrader.com/*"],
+  "host_permissions": [
+    "https://*.autotrader.com/*",
+    "https://*.facebook.com/*",
+    "https://*.facebookmarketplace.com/*"
+  ],
   "background": {
     "service_worker": "dist/background.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["https://*.autotrader.com/*"],
-      "js": ["dist/content.js"]
+      "matches": [
+        "https://*.autotrader.com/*",
+        "https://*.facebook.com/*marketplace*",
+        "https://*.facebook.com/*/items/*"
+      ],
+      "js": ["dist/content.js"],
+      "run_at": "document_idle"
     }
   ],
   "action": {

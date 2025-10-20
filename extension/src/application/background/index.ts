@@ -12,7 +12,8 @@ import { CompositeAnalyzer } from "@infrastructure/ai/composite-analyzer";
 import { ListingEventBus } from "../events/listing-event-bus";
 
 const listingSources = ListingSourceFactory.create([
-  { id: "autotrader", domains: ["autotrader.com"], type: "autotrader" }
+  { id: "autotrader", domains: ["autotrader.com"], type: "autotrader" },
+  { id: "facebook", domains: ["facebook.com", "facebookmarketplace.com"], type: "facebook" }
 ]);
 
 const scraperService = new ListingScraperService(listingSources);

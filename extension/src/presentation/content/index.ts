@@ -1,4 +1,5 @@
 import { sendEvaluateListingCommand } from "./messaging";
+import { initFacebookExtractor } from "./facebook.extractor";
 
 const currentUrl = window.location.href;
 
@@ -64,6 +65,13 @@ async function showAssessmentOverlay() {
   } catch (error) {
     console.error("Failed to trigger evaluation", error);
   }
+}
+
+// Initialize extraction for Facebook Marketplace if applicable
+try {
+  initFacebookExtractor();
+} catch (e) {
+  // ignore errors from extractor
 }
 
 void showAssessmentOverlay();
