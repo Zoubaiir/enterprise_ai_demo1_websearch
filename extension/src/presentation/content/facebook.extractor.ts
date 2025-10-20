@@ -41,7 +41,18 @@ export function tryExtractFromMeta(): Partial<ListingPayload> | null {
   const title = document.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
     document.querySelector('meta[name="title"]')?.getAttribute('content');
   const image = document.querySelector('meta[property="og:image"]')?.getAttribute('content');
-  const priceText = Array.from(document.querySelectorAll('[content], [data-testid], span, div'))
+  const priceMetaSelectors = [
+    'meta[property="product:price:amount"]',
+    'meta[property="og:price:amount"]',
+    'meta[property="og:price"]',
+    'meta[itemprop="price"]',
+    'meta[name="price"]'
+  ];
+  const priceMetaContent = priceMetaSelectors
+    .map((selector) => document.querySelector(selector)?.getAttribute('content')?.trim())
+    .find((value) => !!value);
+
+  const priceText = priceMetaContent ?? Array.from(document.querySelectorAll('[data-testid], span, div'))
     .map((el) => (el.textContent || "").trim())
     .find((t) => /\$\s?\d{1,3}(?:[\,\.]\d{3})*/.test(t));
 
@@ -73,7 +84,7 @@ export function tryExtractFromDom(): Partial<ListingPayload> | null {
   const images = imgEls.length ? imgEls.slice(0, 6).map(i => (i.getAttribute('src') || i.getAttribute('data-src') || '') as string) : undefined;
 
   // Simple heuristic for mileage/year inside text nodes
-  const bodyText = document.body.innerText || "";
+  const bodyText = document.body.innerText || document.body.textContent || "";
   const yearMatch = bodyText.match(/\b(19|20)\d{2}\b/);
   const mileageMatch = bodyText.match(/(\d{1,3}(?:[\,\.]\d{3})+)\s*(miles|mi)\b/i);
 
