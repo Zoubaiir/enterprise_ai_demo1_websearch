@@ -30,13 +30,22 @@ function renderAssessment(assessment: any) {
         ${images.map((img: any) => `<img src="${img.url}" style="width:80px;height:60px;object-fit:cover;border-radius:4px"/>`).join('')}
       </div>
       <div style="margin-top:10px">
-        <button id="refresh-assessment">Refresh</button>
+        <button id="refresh-assessment" type="button">Refresh</button>
       </div>
     </main>
   `;
 
-  const refreshBtn = document.getElementById('refresh-assessment');
-  refreshBtn?.addEventListener('click', loadLatestAssessment);
+  // Use event delegation on the container so listeners survive re-renders
+  // and we can easily debug click events
+  container.addEventListener('click', (ev) => {
+    const target = ev.target as HTMLElement | null;
+    if (!target) return;
+    if (target.id === 'refresh-assessment' || target.closest('#refresh-assessment')) {
+      console.info('Popup: refresh button clicked');
+      ev.preventDefault();
+      loadLatestAssessment();
+    }
+  });
 }
 
 function loadLatestAssessment() {
